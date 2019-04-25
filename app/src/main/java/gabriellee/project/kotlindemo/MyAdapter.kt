@@ -7,48 +7,40 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.row_layout.view.*
 //Pass the ArrayList and a listener, and add a variable to hold your data//
 
-class MyAdapter (private val cryptoList : ArrayList<Crypto>, private val listener :
+class MyAdapter (private val cryptoList : ArrayList<Crypto>, private val listener : Listener)
+    //Extend RecyclerView.Adapter//
+    : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
-//Extend RecyclerView.Adapter//
-Listener) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
     interface Listener {
         fun onItemClick(retroCrypto : Crypto)
-
     }
 
-//Define an array of colours//
-
+    //Define an array of colours//
     private val colors : Array<String> = arrayOf("#7E57C2", "#42A5F5", "#26C6DA", "#66BB6A", "#FFEE58", "#FF7043" , "#EC407A" , "#d32f2f")
 
-//Bind the ViewHolder//
-
+    //Bind the ViewHolder//
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-//Pass the position where each item should be displayed//
-
+        //Pass the position where each item should be displayed//
         holder.bind(cryptoList[position], listener, colors, position)
-
     }
 
-//Check how many items you have to display//
-
+    //Check how many items you have to display//
     override fun getItemCount(): Int = cryptoList.count()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.row_layout, parent, false)
         return ViewHolder(view)
 
     }
 
-//Create a ViewHolder class for your RecyclerView items//
-
+    //Create a ViewHolder class for your RecyclerView items//
     class ViewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
-//Assign values from the data model, to their corresponding Views//
-
+    //Assign values from the data model, to their corresponding Views//
         fun bind(retroCrypto: Crypto, listener: Listener, colors : Array<String>, position: Int) {
 
-//Listen for user input events//
-
+            //Listen for user input events//
             itemView.setOnClickListener{ listener.onItemClick(retroCrypto) }
             itemView.setBackgroundColor(Color.parseColor(colors[position % 8]))
             itemView.text_name.text = retroCrypto.currency
